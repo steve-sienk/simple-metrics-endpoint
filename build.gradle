@@ -1,9 +1,9 @@
 plugins {
     id 'java'
+    id 'idea'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'io.pivotal.pcc.observability'
 
 sourceCompatibility = 1.8
 
@@ -11,13 +11,30 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    extraLibs
+}
+
 dependencies {
     implementation 'org.apache.geode:geode-core:1.9.0'
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.2.0'
+    implementation 'org.slf4j:slf4j-api:1.7.28'
+
+    extraLibs 'io.micrometer:micrometer-registry-prometheus:1.2.0'
+    configurations.compile.extendsFrom(configurations.extraLibs)
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.5.1'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.0.0'
-    implementation 'org.apache.httpcomponents:httpclient:4.5.9'
-    implementation 'org.hamcrest:hamcrest:2.1'
+    testImplementation 'org.hamcrest:hamcrest:2.1'
+
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.pivotal.cloudcache.metrics.JMXPropertiesEmitter'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 test {

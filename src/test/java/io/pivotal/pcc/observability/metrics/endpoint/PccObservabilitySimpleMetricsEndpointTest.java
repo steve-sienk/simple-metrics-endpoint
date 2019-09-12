@@ -1,7 +1,6 @@
-package org.example;
+package io.pivotal.pcc.observability.metrics.endpoint;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,7 +25,7 @@ import org.apache.geode.metrics.MetricsPublishingService;
 import org.apache.geode.metrics.MetricsSession;
 
 @ExtendWith(MockitoExtension.class)
-class MyMetricsPublishingServiceTest {
+class PccObservabilitySimpleMetricsEndpointTest {
 
   @Mock
   private MetricsSession metricsSession;
@@ -35,7 +34,7 @@ class MyMetricsPublishingServiceTest {
 
   @BeforeEach
   void setUp() {
-    subject = new MyMetricsPublishingService();
+    subject = new PccObservabilitySimpleMetricsEndpoint(9000);
   }
 
   @Test
