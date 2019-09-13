@@ -22,7 +22,7 @@ when you launch the locator or server:
 
 ```
 gfsh> start locator [...] --classpath=path-to-jar-file.jar
-gfsh> start server [,,,] --classpath=path-to-jar-file.jar
+gfsh> start server [...] --classpath=path-to-jar-file.jar
 ```
 
 Alternatively, you may copy the simple-metrics-endpoint.jar file
