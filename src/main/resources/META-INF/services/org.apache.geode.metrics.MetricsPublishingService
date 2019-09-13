@@ -1,1 +1,1 @@
-io.pivotal.pcc.observability.metrics.endpoint.PccObservabilitySimpleMetricsEndpoint
+io.pivotal.geode.metrics.SimpleMetricsPublishingService

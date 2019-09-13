@@ -1,4 +1,4 @@
-package io.pivotal.pcc.observability.metrics.endpoint;
+package io.pivotal.geode.metrics;
 
 import static io.micrometer.prometheus.PrometheusConfig.DEFAULT;
 import static java.lang.Integer.getInteger;
@@ -17,24 +17,24 @@ import org.slf4j.Logger;
 import org.apache.geode.metrics.MetricsPublishingService;
 import org.apache.geode.metrics.MetricsSession;
 
-public class PccObservabilitySimpleMetricsEndpoint implements MetricsPublishingService {
+public class SimpleMetricsPublishingService implements MetricsPublishingService {
   private static final String PORT_PROPERTY = "prometheus.metrics.port";
   private static final int DEFAULT_PORT = 0; // If no port specified, use any port
   private static final String HOSTNAME = "localhost";
   private static final int PORT = getInteger(PORT_PROPERTY, DEFAULT_PORT);
 
-  private static Logger LOG = getLogger(PccObservabilitySimpleMetricsEndpoint.class);
+  private static Logger LOG = getLogger(SimpleMetricsPublishingService.class);
 
   private final int port;
   private MetricsSession session;
   private PrometheusMeterRegistry registry;
   private HttpServer server;
 
-  public PccObservabilitySimpleMetricsEndpoint() {
+  public SimpleMetricsPublishingService() {
     this(PORT);
   }
 
-  public PccObservabilitySimpleMetricsEndpoint(int port) {
+  public SimpleMetricsPublishingService(int port) {
     this.port = port;
   }
 
@@ -49,14 +49,14 @@ public class PccObservabilitySimpleMetricsEndpoint implements MetricsPublishingS
     try {
       server = HttpServer.create(address, 0);
     } catch (IOException thrown) {
-      LOG.error("Exception while starting Prometheus endpoint", thrown);
+      LOG.error("Exception while starting " + getClass().getSimpleName(), thrown);
     }
     HttpContext context = server.createContext("/");
     context.setHandler(this::requestHandler);
     server.start();
 
     int boundPort = server.getAddress().getPort();
-    LOG.info("Started Prometheus endpoint http://{}:{}/", HOSTNAME, boundPort);
+    LOG.info("Started {} http://{}:{}/", getClass().getSimpleName(), HOSTNAME, boundPort);
   }
 
   private void requestHandler(HttpExchange httpExchange) throws IOException {

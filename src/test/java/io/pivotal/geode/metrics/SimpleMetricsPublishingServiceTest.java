@@ -1,4 +1,4 @@
-package io.pivotal.pcc.observability.metrics.endpoint;
+package io.pivotal.geode.metrics;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -25,7 +25,7 @@ import org.apache.geode.metrics.MetricsPublishingService;
 import org.apache.geode.metrics.MetricsSession;
 
 @ExtendWith(MockitoExtension.class)
-class PccObservabilitySimpleMetricsEndpointTest {
+class SimpleMetricsPublishingServiceTest {
 
   @Mock
   private MetricsSession metricsSession;
@@ -34,7 +34,7 @@ class PccObservabilitySimpleMetricsEndpointTest {
 
   @BeforeEach
   void setUp() {
-    subject = new PccObservabilitySimpleMetricsEndpoint(9000);
+    subject = new SimpleMetricsPublishingService(9000);
   }
 
   @Test
