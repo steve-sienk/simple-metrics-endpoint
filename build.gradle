@@ -1,49 +1,45 @@
 plugins {
-    id 'java'
-    id 'idea'
+  id 'java'
+  id 'idea'
 }
 
-group 'io.pivotal.pcc.observability'
+group 'io.pivotal.demery'
 
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 configurations {
-    extraLibs
+  bundledDependencies
 }
 
 dependencies {
-    implementation 'org.apache.geode:geode-core:1.9.0'
-    implementation 'org.slf4j:slf4j-api:1.7.28'
+  implementation "org.apache.geode:geode-core:${geodeVersion}"
+  implementation "org.slf4j:slf4j-api:${slf4jVersion}"
 
-    extraLibs 'io.micrometer:micrometer-registry-prometheus:1.2.0'
-    configurations.compile.extendsFrom(configurations.extraLibs)
+  bundledDependencies "io.micrometer:micrometer-registry-prometheus:${micrometerVersion}"
+  configurations.compile.extendsFrom(configurations.bundledDependencies)
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.5.1'
-    testImplementation 'org.mockito:mockito-junit-jupiter:3.0.0'
-    testImplementation 'org.hamcrest:hamcrest:2.1'
-
+  testCompile "org.assertj:assertj-core:${assertJVersion}"
+  testImplementation "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+  testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
 }
 
 jar {
-    manifest {
-        attributes 'Main-Class': 'io.pivotal.cloudcache.metrics.JMXPropertiesEmitter'
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+  from {
+    configurations.bundledDependencies.collect { it.isDirectory() ? it : zipTree(it) }
+  }
 }
 
 test {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 tasks.withType(Test) {
-    testLogging {
-        events "PASSED", "FAILED", "SKIPPED"
-        exceptionFormat "full"
-    }
+  testLogging {
+    events "PASSED", "FAILED", "SKIPPED"
+    exceptionFormat "full"
+  }
 }

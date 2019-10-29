@@ -1,7 +1,6 @@
 package io.pivotal.geode.metrics;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -53,7 +52,8 @@ class SimpleMetricsPublishingServiceTest {
     HttpGet request = new HttpGet("http://localhost:9000/");
     HttpResponse response = HttpClientBuilder.create().build().execute(request);
 
-    assertThat(response.getStatusLine().getStatusCode(), equalTo(HttpStatus.SC_OK));
+    assertThat(response.getStatusLine().getStatusCode())
+        .isEqualTo(HttpStatus.SC_OK);
 
     subject.stop();
   }
@@ -66,7 +66,7 @@ class SimpleMetricsPublishingServiceTest {
     HttpResponse response = HttpClientBuilder.create().build().execute(request);
 
     String responseBody = EntityUtils.toString(response.getEntity());
-    assertThat(responseBody, equalTo(""));
+    assertThat(responseBody).isEmpty();
 
     subject.stop();
   }
