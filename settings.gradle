@@ -1,2 +1,3 @@
 rootProject.name = 'simple-metrics-endpoint'
+prometheus.metrics.port = 8008
 
